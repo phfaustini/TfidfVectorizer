@@ -26,11 +26,15 @@ class TfIdfVectorizer
         /**
          * Constructor.
          * 
-         * @param binary: whether features are 1/0 (true) or tfidf values.
+         * @param binary: whether features are 1/0 (true) or tfidf values (false).
          * @param max_features: use max_features words with the highest tfidf values.
          *                      If negative, uses all words.
+         * @param norm: Each output will have unit norm. 
+         *              None: no normalization.
+         *              ‘l2’: Sum of squares of vector elements is 1.
+         *              ‘l1’: Sum of absolute values of vector elements is 1. 
          */
-        TfIdfVectorizer(bool binary=false, int max_features=-1);
+        TfIdfVectorizer(bool binary=false, int max_features=-1, std::string norm="l2");
 
         /**
          * Fit the model by computing idf of training data.
@@ -76,6 +80,7 @@ class TfIdfVectorizer
         std::map<std::string, size_t> vocabulary_;
         bool binary;
         int max_features;
+        double p;
 };
 
 #endif

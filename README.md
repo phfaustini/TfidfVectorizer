@@ -19,7 +19,7 @@ g++ main.cc src/tfidf_vectorizer.cc -larmadillo -std=c++11 && ./a.out
 * Tokenizes raw documents.
 * Work with both tf-idf and binary values.
 * Can use a selected number of features (the ones with highest idf).
-* Similar interface to sklearn: _fit_, _transform_ and _fit\_transform_ methods, as well as _idf\__ and _vocabulary\__ members. However, this is not a port from sklearn TfidfVectorizer.
+* Similar interface to sklearn: _fit_, _transform_ and _fit\_transform_ methods, as well as _idf\__ and _vocabulary\__ members. However, this is not a port from sklearn TfidfVectorizer. However, it tries to mimic sklearn. The example given here produces the same tfidf matrix as sklean in https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html
 
 ## Notes:
 * Features are in rows, documents (objects) are in columns.

@@ -11,10 +11,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include "../include/tfidf_vectorizer.h"
 
 
-TfIdfVectorizer::TfIdfVectorizer(bool binary, int max_features)
+TfIdfVectorizer::TfIdfVectorizer(bool binary, int max_features, std::string norm)
 {
     this->binary = binary;
     this->max_features = max_features; // -1 uses all words.
+    if (norm == "l2") this->p = 2;
+    else if (norm == "l1") this->p = 1;
+    else this->p = 0;
 }
 
 
@@ -177,7 +180,21 @@ arma::mat TfIdfVectorizer::transform(std::vector<std::string>& documents)
                 X_transformed(w, d) = (tf_hash[word] > 0) ? 1 : 0;
             else
                 X_transformed(w, d) = tf_hash[word] * idf;
-        } 
+        }
+    }
+
+    /*Normalize vectors.*/
+    if (this->p != 0)
+    {
+        for (size_t c = 0; c < X_transformed.n_cols; c++)
+        {
+            double norm = 0;
+            for (size_t r = 0; r < X_transformed.n_rows; r++)
+                norm += std::pow(X_transformed(r, c), this->p);
+            norm = std::sqrt(norm);
+            for (size_t r = 0; r < X_transformed.n_rows; r++)
+                X_transformed(r, c) /= norm;
+        }
     }
     return X_transformed;
 }
