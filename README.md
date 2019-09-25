@@ -1,4 +1,4 @@
-# TfidfVectorizer
+# C++ TfidfVectorizer
 Convert raw documents to a matrix of TF-IDF features.
 
 
@@ -17,8 +17,9 @@ g++ main.cc src/tfidf_vectorizer.cc -larmadillo -std=c++11 && ./a.out
 
 ## Features:
 * Tokenizes raw documents.
-* Work with both tf-idf and binary values
+* Work with both tf-idf and binary values.
 * Can use a selected number of features (the ones with highest idf).
+* Similar interface to sklearn: _fit_, _transform_ and _fit\_transform_ methods, as well as _idf\__ and _vocabulary\__ members. However, this is not a port from sklearn TfidfVectorizer.
 
 ## Notes:
 * Features are in rows, documents (objects) are in columns.
