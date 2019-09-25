@@ -61,6 +61,9 @@ class TfIdfVectorizer
          */
         arma::mat fit_transform(std::vector<std::string>& documents);
 
+        std::map<std::string, double> get_idf_();
+        std::map<std::string, size_t> get_vocabulary_();
+
     protected:
         std::vector<std::string> tokenise_document(std::string& document);
         std::vector<std::vector<std::string>> tokenise_documents(std::vector<std::string>& documents);

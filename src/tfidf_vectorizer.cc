@@ -98,7 +98,6 @@ std::map<std::string, double> TfIdfVectorizer::idf(std::vector<std::map<std::str
         /*Adding both denominator and numerator by 1 to avoid division by 0 AND negative idf */
         temp_idf = std::log((d_documents + 1) / (value + 1)) + 1; //log+1 avoids terms with zero idf to be suppressed.
         this->idf_[key] = temp_idf;
-        std::cout << key << " idf =  " << temp_idf << " value =  " << value << std::endl;
     }
 
     /*Get only the words with highest idf.*/
@@ -181,4 +180,17 @@ arma::mat TfIdfVectorizer::transform(std::vector<std::string>& documents)
         } 
     }
     return X_transformed;
+}
+
+
+std::map<std::string, double> TfIdfVectorizer::get_idf_()
+{
+    const std::map<std::string, double> i = this->idf_;
+    return i;
+}
+
+std::map<std::string, size_t> TfIdfVectorizer::get_vocabulary_()
+{
+    const std::map<std::string, size_t> v = this->vocabulary_;
+    return v;
 }
