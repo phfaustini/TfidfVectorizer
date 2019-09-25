@@ -1,16 +1,16 @@
-#include "../include/tfidf_vectoriser.h"
+#include "../include/tfidf_vectorizer.h"
 
 //https://stackabuse.com/python-for-nlp-creating-tf-idf-model-from-scratch/
 
 
-TfIdfVectoriser::TfIdfVectoriser(bool binary, int max_features)
+TfIdfVectorizer::TfIdfVectorizer(bool binary, int max_features)
 {
     this->binary = binary;
     this->max_features = max_features; // -1 uses all words.
 }
 
 
-std::vector<std::string> TfIdfVectoriser::tokenise_document(std::string& document)
+std::vector<std::string> TfIdfVectorizer::tokenise_document(std::string& document)
 {
     std::vector<std::string> tokens;
     std::string s;
@@ -26,7 +26,7 @@ std::vector<std::string> TfIdfVectoriser::tokenise_document(std::string& documen
 }
 
 
-std::vector<std::vector<std::string>> TfIdfVectoriser::tokenise_documents(std::vector<std::string>& documents)
+std::vector<std::vector<std::string>> TfIdfVectorizer::tokenise_documents(std::vector<std::string>& documents)
 {
     std::vector<std::vector<std::string>> documents_tokenised;
     for (size_t i = 0; i < documents.size(); i++)
@@ -34,7 +34,7 @@ std::vector<std::vector<std::string>> TfIdfVectoriser::tokenise_documents(std::v
     return documents_tokenised;
 }
 
-std::vector<std::map<std::string, int>> TfIdfVectoriser::word_count(std::vector<std::vector<std::string>>& documents_tokenised)
+std::vector<std::map<std::string, int>> TfIdfVectorizer::word_count(std::vector<std::vector<std::string>>& documents_tokenised)
 {
     std::vector<std::map<std::string, int>> documents_word_counts;
     std::string word;
@@ -62,7 +62,7 @@ std::vector<std::map<std::string, int>> TfIdfVectoriser::word_count(std::vector<
     return documents_word_counts;
 }
 
-void TfIdfVectoriser::fit(std::vector<std::string>& documents)
+void TfIdfVectorizer::fit(std::vector<std::string>& documents)
 {
     this->vocabulary_.clear();
     this->idf_.clear();
@@ -71,7 +71,7 @@ void TfIdfVectoriser::fit(std::vector<std::string>& documents)
     idf(documents_word_counts);
 }
 
-std::map<std::string, double> TfIdfVectoriser::idf(std::vector<std::map<std::string, int>>& documents_word_counts)
+std::map<std::string, double> TfIdfVectorizer::idf(std::vector<std::map<std::string, int>>& documents_word_counts)
 {
     std::string key;
     int value;
@@ -120,7 +120,7 @@ std::map<std::string, double> TfIdfVectoriser::idf(std::vector<std::map<std::str
     return this->idf_;
 }
 
-std::vector<std::map<std::string, double>> TfIdfVectoriser::tf(std::vector<std::vector<std::string>>& documents_tokenised)
+std::vector<std::map<std::string, double>> TfIdfVectorizer::tf(std::vector<std::vector<std::string>>& documents_tokenised)
 {
     std::vector<std::map<std::string, double>> documents_word_frequency;
     std::string word;
@@ -141,13 +141,13 @@ std::vector<std::map<std::string, double>> TfIdfVectoriser::tf(std::vector<std::
     return documents_word_frequency;
 }
 
-arma::mat TfIdfVectoriser::fit_transform(std::vector<std::string>& documents)
+arma::mat TfIdfVectorizer::fit_transform(std::vector<std::string>& documents)
 {
     fit(documents);
     return transform(documents);
 }
 
-arma::mat TfIdfVectoriser::transform(std::vector<std::string>& documents)
+arma::mat TfIdfVectorizer::transform(std::vector<std::string>& documents)
 {
     std::vector<std::vector<std::string>> documents_tokenised = tokenise_documents(documents);
     std::vector<std::map<std::string, double>> documents_word_counts = tf(documents_tokenised);
