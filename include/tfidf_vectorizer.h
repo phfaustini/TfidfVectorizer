@@ -13,7 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #include <iostream>
 #include <boost/tokenizer.hpp>
-//#include <boost/algorithm/string.hpp>
 #include <string>
 #include <vector>
 #include <armadillo>
@@ -31,7 +30,7 @@ class TfIdfVectorizer
          * @param max_features: use max_features words with the highest tfidf values.
          *                      If negative, uses all words.
          */
-        TfIdfVectoriser(bool binary=false, int max_features=-1);
+        TfIdfVectorizer(bool binary=false, int max_features=-1);
 
         /**
          * Fit the model by computing idf of training data.

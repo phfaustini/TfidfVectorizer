@@ -1,6 +1,14 @@
-#include "../include/tfidf_vectorizer.h"
+/*
+Copyright <2019> <Pedro Faustini>
 
-//https://stackabuse.com/python-for-nlp-creating-tf-idf-model-from-scratch/
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+#include "../include/tfidf_vectorizer.h"
 
 
 TfIdfVectorizer::TfIdfVectorizer(bool binary, int max_features)
@@ -19,7 +27,6 @@ std::vector<std::string> TfIdfVectorizer::tokenise_document(std::string& documen
     for(boost::tokenizer<>::iterator beg=tok.begin(); beg!=tok.end();++beg)
     {
         s = *beg;
-        //boost::algorithm::to_lower(s);
         tokens.push_back(s);
     }
     return tokens;
@@ -82,14 +89,16 @@ std::map<std::string, double> TfIdfVectorizer::idf(std::vector<std::map<std::str
     for (auto it = this->vocabulary_.cbegin(); it != this->vocabulary_.cend(); ++it)
     {
         key = (*it).first;
-        value = 0;//(*it).second;
+        value = 0;
         for (i = 0; i < documents; i++)
         {
             if (documents_word_counts[i][key] > 0)
                 value++;
         }
-        temp_idf = std::log(d_documents / (value + 1));
+        /*Adding both denominator and numerator by 1 to avoid division by 0 AND negative idf */
+        temp_idf = std::log((d_documents + 1) / (value + 1)) + 1; //log+1 avoids terms with zero idf to be suppressed.
         this->idf_[key] = temp_idf;
+        std::cout << key << " idf =  " << temp_idf << " value =  " << value << std::endl;
     }
 
     /*Get only the words with highest idf.*/
