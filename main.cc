@@ -3,10 +3,10 @@
 
 int main()
 {
-    std::vector<std::string> documents = {"this is the first document.", 
-                                          "this document is the second document.", 
-                                          "and this is the third one.", 
-                                          "is this the first document?"};
+    std::vector<std::string> documents = {"This is the first document.", 
+                                          "This document is the second document.", 
+                                          "And this is the third one.", 
+                                          "Is this the first document?"};
     TfIdfVectorizer tfidfvectorizer;
     arma::mat X = tfidfvectorizer.fit_transform(documents);
     X.print("TF-IDF Matrix");

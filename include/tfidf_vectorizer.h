@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #include <iostream>
 #include <boost/tokenizer.hpp>
+#include <boost/algorithm/string.hpp>
 #include <string>
 #include <vector>
 #include <armadillo>
@@ -27,6 +28,7 @@ class TfIdfVectorizer
          * Constructor.
          * 
          * @param binary: whether features are 1/0 (true) or tfidf values (false).
+         * @param lowercase: Convert all characters to lowercase before tokenizing.
          * @param max_features: use max_features words with the highest tfidf values.
          *                      If negative, uses all words.
          * @param norm: Each output will have unit norm. 
@@ -34,7 +36,7 @@ class TfIdfVectorizer
          *              ‘l2’: Sum of squares of vector elements is 1.
          *              ‘l1’: Sum of absolute values of vector elements is 1. 
          */
-        TfIdfVectorizer(bool binary=false, int max_features=-1, std::string norm="l2");
+        TfIdfVectorizer(bool binary=false, bool lowercase=true, int max_features=-1, std::string norm="l2");
 
         /**
          * Fit the model by computing idf of training data.
@@ -81,6 +83,7 @@ class TfIdfVectorizer
         bool binary;
         int max_features;
         double p;
+        bool lowercase;
 };
 
 #endif

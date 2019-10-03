@@ -11,13 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include "../include/tfidf_vectorizer.h"
 
 
-TfIdfVectorizer::TfIdfVectorizer(bool binary, int max_features, std::string norm)
+TfIdfVectorizer::TfIdfVectorizer(bool binary, bool lowercase, int max_features, std::string norm)
 {
     this->binary = binary;
     this->max_features = max_features; // -1 uses all words.
     if (norm == "l2") this->p = 2;
     else if (norm == "l1") this->p = 1;
     else this->p = 0;
+    this->lowercase = lowercase;
 }
 
 
@@ -30,6 +31,8 @@ std::vector<std::string> TfIdfVectorizer::tokenise_document(std::string& documen
     for(boost::tokenizer<>::iterator beg=tok.begin(); beg!=tok.end();++beg)
     {
         s = *beg;
+        if (this->lowercase)
+            boost::algorithm::to_lower(s);
         tokens.push_back(s);
     }
     return tokens;
