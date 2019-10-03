@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include "../include/tfidf_vectorizer.h"
 
 
-TfIdfVectorizer::TfIdfVectorizer(bool binary, bool lowercase, int max_features, std::string norm)
+TfIdfVectorizer::TfIdfVectorizer(bool binary, bool lowercase, bool use_idf, int max_features, std::string norm, bool sublinear_tf)
 {
     this->binary = binary;
     this->max_features = max_features; // -1 uses all words.
@@ -19,6 +19,8 @@ TfIdfVectorizer::TfIdfVectorizer(bool binary, bool lowercase, int max_features, 
     else if (norm == "l1") this->p = 1;
     else this->p = 0;
     this->lowercase = lowercase;
+    this->use_idf = use_idf;
+    this->sublinear_tf = sublinear_tf;
 }
 
 
@@ -149,7 +151,14 @@ std::vector<std::map<std::string, double>> TfIdfVectorizer::tf(std::vector<std::
         }
         for (auto& s : documents_word_frequency[d])
         {
-            documents_word_frequency[d][s.first] /= documents_tokenised[d].size();
+            if(this->binary) // If True, all non-zero term counts are set to 1. 
+                documents_word_frequency[d][s.first] = (documents_word_frequency[d][s.first] > 0) ? 1 : 0;
+            else // Computes tf dividing term count by doc size.
+            {
+                documents_word_frequency[d][s.first] /= documents_tokenised[d].size();
+                if(this->sublinear_tf)
+                    documents_word_frequency[d][s.first] = 1 + std::log(documents_word_frequency[d][s.first]);
+            }
         } 
     }
     return documents_word_frequency;
@@ -179,10 +188,10 @@ arma::mat TfIdfVectorizer::transform(std::vector<std::string>& documents)
             word = s.first;
             w = this->vocabulary_[word];
             idf = s.second;
-            if (this->binary)
-                X_transformed(w, d) = (tf_hash[word] > 0) ? 1 : 0;
-            else
+            if (this->use_idf)
                 X_transformed(w, d) = tf_hash[word] * idf;
+            else
+                X_transformed(w, d) = (tf_hash[word] > 0) ? 1 : 0;
         }
     }
 

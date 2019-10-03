@@ -27,7 +27,11 @@ class TfIdfVectorizer
         /**
          * Constructor.
          * 
-         * @param binary: whether features are 1/0 (true) or tfidf values (false).
+         * @param binary: If True, all non-zero term counts are set to 1. 
+         *                This does not mean outputs will have only 0/1 values, 
+         *                only that the tf term in tf-idf is binary. 
+         *                (Set binary to true and use_idf to false to get 0/1 outputs.)
+         * @param use_idf: Enable inverse-document-frequency reweighting.
          * @param lowercase: Convert all characters to lowercase before tokenizing.
          * @param max_features: use max_features words with the highest tfidf values.
          *                      If negative, uses all words.
@@ -35,8 +39,9 @@ class TfIdfVectorizer
          *              None: no normalization.
          *              ‘l2’: Sum of squares of vector elements is 1.
          *              ‘l1’: Sum of absolute values of vector elements is 1. 
+         * @param sublinear_tf: Apply sublinear tf scaling, i.e. replace tf with 1 + log(tf).
          */
-        TfIdfVectorizer(bool binary=false, bool lowercase=true, int max_features=-1, std::string norm="l2");
+        TfIdfVectorizer(bool binary=false, bool lowercase=true, bool use_idf=true, int max_features=-1, std::string norm="l2", bool sublinear_tf=false);
 
         /**
          * Fit the model by computing idf of training data.
@@ -84,6 +89,8 @@ class TfIdfVectorizer
         int max_features;
         double p;
         bool lowercase;
+        bool use_idf;
+        bool sublinear_tf;
 };
 
 #endif
