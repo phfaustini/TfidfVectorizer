@@ -1,5 +1,5 @@
-//g++ main.cc src/tfidf_vectorizer.cc -larmadillo -std=c++11
-#include "include/tfidf_vectorizer.h"
+//g++ main.cc -larmadillo -std=c++11 && ./a.out
+#include "tfidf_vectorizer.h"
 
 int main()
 {
