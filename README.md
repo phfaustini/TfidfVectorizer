@@ -24,3 +24,22 @@ g++ main.cc src/tfidf_vectorizer.cc -larmadillo -std=c++11 && ./a.out
 ## Notes:
 * Features are in rows, documents (objects) are in columns.
 * This behavior is opposed to what is normally done in Python, but it is the default in C++ libraries such as MLPack.
+
+
+## Optional: unit tests
+
+* Install catch2
+```
+git clone https://github.com/catchorg/Catch2.git # somewhere else
+cd Catch2
+cmake -Bbuild -H. -DBUILD_TESTING=OFF
+sudo cmake --build build/ --target install 
+```
+
+* Run tests
+
+```
+cd tests/
+g++ t1.cc -larmadillo -std=c++11 -o tests
+./tests
+```
